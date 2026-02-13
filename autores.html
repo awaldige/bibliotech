@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Autores - BiblioTech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css?v=2.2">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="container nav-flex">
+            <div class="logo"><i class="fas fa-book-reader"></i> Biblio<span>Tech</span></div>
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="livros.html">Livros</a></li>
+                <li><a href="autores.html" class="active">Autores</a></li>
+                <li><a href="editoras.html">Editoras</a></li>
+                <li><a href="usuarios.html">Leitores</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-content">
+            <div class="action-box">
+                <h2><i class="fas fa-pen-nib"></i> Novo Autor</h2>
+                <form id="form-autor">
+                    <div class="form-group">
+                        <label>Nome do Autor</label>
+                        <input type="text" id="nome-autor" required placeholder="Ex: Machado de Assis">
+                    </div>
+                    <div class="form-group">
+                        <label>Nacionalidade</label>
+                        <input type="text" id="nacionalidade-autor" placeholder="Ex: Brasileira">
+                    </div>
+                    <button type="submit" class="btn btn-add" style="width: 100%; border: none; cursor: pointer;">
+                        <i class="fas fa-save"></i> Salvar Autor
+                    </button>
+                </form>
+            </div>
+
+            <div class="list-box">
+                <h2><i class="fas fa-list"></i> Autores Cadastrados</h2>
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Nacionalidade</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-autores">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalEditarAutor" class="modal-simples" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center; backdrop-filter: blur(4px);">
+        <div class="modal-content" style="background:white; padding:30px; border-radius:20px; width:90%; max-width:400px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-edit"></i> Editar Autor</h3>
+            
+            <form id="form-editar-autor">
+                <input type="hidden" id="edit-id-autor">
+                
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom:5px;">Nome do Autor</label>
+                    <input type="text" id="edit-nome-autor" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:5px;">Nacionalidade</label>
+                    <input type="text" id="edit-nacionalidade-autor" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-save" style="flex:2; padding:12px; border:none; border-radius:8px; cursor:pointer; background-color: #27ae60; color: white;">
+                        Salvar Alterações
+                    </button>
+                    <button type="button" onclick="fecharModalAutor()" class="btn-outline" style="flex:1; padding:12px; background:white; border:1px solid #ccc; border-radius:8px; cursor:pointer;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/autores.js"></script>
+</body>
+</html>

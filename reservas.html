@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioTech - Reservas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="container nav-flex">
+            <div class="logo"><i class="fas fa-book-reader"></i> Biblio<span>Tech</span></div>
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="livros.html">Livros</a></li>
+                <li><a href="usuarios.html">Leitores</a></li>
+                <li><a href="emprestimos.html">Empréstimos</a></li>
+                <li><a href="reservas.html" class="active">Reservas</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-banner" style="padding: 30px; margin-bottom: 30px;">
+            <h1><i class="fas fa-bookmark"></i> Gestão de Reservas</h1>
+            <p>Gerencie a fila de espera para os títulos mais disputados.</p>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="list-box">
+                <h3 style="margin-bottom: 20px;">Fila de Espera Atual</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; color: var(--text-muted); font-size: 0.85rem;">
+                            <th style="padding: 10px;">LIVRO</th>
+                            <th style="padding: 10px;">LEITOR</th>
+                            <th style="padding: 10px;">DATA</th>
+                            <th style="padding: 10px;">AÇÃO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-reservas">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="action-box">
+                <h3 style="margin-bottom: 20px;">Nova Reserva</h3>
+                <form id="form-reserva">
+                    <div class="form-group">
+                        <label>Selecionar Livro</label>
+                        <select id="select-livro" required>
+                            <option value="">Carregando...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Selecionar Leitor</label>
+                        <select id="select-leitor" required>
+                            <option value="">Carregando...</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-save" style="width: 100%; border: none; cursor: pointer;">
+                        <i class="fas fa-plus-circle"></i> Criar Reserva
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/reservas.js"></script>
+</body>
+</html>

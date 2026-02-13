@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioTech - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css?v=2.0">
+    <style>
+        /* Estilos específicos para o Modal */
+        .modal-simples {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .stat-card.alert { border-bottom: 4px solid #e67e22; }
+        
+        /* Cor específica para o botão de editora */
+        .btn-editora { border: 2px solid #9b59b6 !important; color: #9b59b6 !important; }
+        .btn-editora:hover { background: #9b59b6; color: white !important; }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="container nav-flex">
+            <div class="logo">
+                <i class="fas fa-book-reader"></i> Biblio<span>Tech</span>
+            </div>
+            <ul class="menu">
+                <li><a href="index.html" class="active">Início</a></li>
+                <li><a href="livros.html">Livros</a></li>
+                <li><a href="usuarios.html">Leitores</a></li>
+                <li><a href="emprestimos.html">Empréstimos</a></li>
+                <li><a href="reservas.html">Reservas</a></li> 
+                <li><a href="editoras.html">Editoras</a></li>
+                <li><a href="config.html"><i class="fas fa-cog"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="welcome-banner">
+            <h1>Bem-vindo ao Painel de Controle 📚</h1>
+            <p id="data-atual">Carregando data...</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="card-icon"><i class="fas fa-book"></i></div>
+                <h3>Livros</h3>
+                <p id="total-livros">0</p>
+                <span>No acervo</span>
+            </div>
+            <div class="stat-card success">
+                <div class="card-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                <h3>Empréstimos</h3>
+                <p id="total-emprestimos">0</p>
+                <span>Ativos</span>
+            </div>
+            <div class="stat-card alert"> 
+                <div class="card-icon"><i class="fas fa-calendar-check" style="color: #e67e22;"></i></div>
+                <h3>Reservas</h3>
+                <p id="total-reservas">0</p>
+                <span>Aguardando</span>
+            </div>
+            <div class="stat-card">
+                <div class="card-icon"><i class="fas fa-users"></i></div>
+                <h3>Leitores</h3>
+                <p id="total-usuarios">0</p>
+                <span>Cadastrados</span>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="list-box">
+                <h2><i class="fas fa-bell"></i> Atividade Recente</h2>
+                <div id="lista-atividades">
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Buscando movimentações...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-box">
+                <h2><i class="fas fa-bolt"></i> Atalhos Rápidos</h2>
+                <nav class="nav-vertical">
+                    <a href="adicionar.html" class="btn btn-add">
+                        <i class="fas fa-plus-circle"></i> Cadastrar Livro
+                    </a>
+                    
+                    <button onclick="abrirModal('modalAutor')" class="btn btn-outline" style="width: 100%; cursor: pointer; margin-bottom: 15px; border: 2px solid #3498db; color: #3498db;">
+                        <i class="fas fa-user-plus"></i> Novo Autor
+                    </button>
+
+                    <button onclick="abrirModal('modalEditora')" class="btn btn-outline btn-editora" style="width: 100%; cursor: pointer; margin-bottom: 15px;">
+                        <i class="fas fa-building"></i> Nova Editora
+                    </button>
+
+                    <a href="livros.html" class="btn btn-outline">
+                        <i class="fas fa-list"></i> Listar Livros
+                    </a>
+                    
+                    <a href="emprestimos.html" class="btn btn-save">
+                        <i class="fas fa-exchange-alt"></i> Novo Empréstimo
+                    </a>
+
+                    <a href="reservas.html" class="btn btn-outline" style="border-color: #e67e22; color: #e67e22;">
+                        <i class="fas fa-bookmark"></i> Gerenciar Reservas
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalAutor" class="modal-simples">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 15px;"><i class="fas fa-feather"></i> Novo Autor</h3>
+            <form id="form-rapido-autor">
+                <div class="form-group">
+                    <label>Nome do Autor</label>
+                    <input type="text" id="nome-autor" placeholder="Ex: Machado de Assis" required style="width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px;">
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-save" style="flex:2; border:none; cursor:pointer;">Salvar</button>
+                    <button type="button" onclick="fecharModal('modalAutor')" class="btn btn-outline" style="flex:1; cursor:pointer;">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalEditora" class="modal-simples">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 15px;"><i class="fas fa-building"></i> Nova Editora</h3>
+            <form id="form-rapido-editora">
+                <div class="form-group">
+                    <label>Nome da Editora</label>
+                    <input type="text" id="nome-editora" placeholder="Ex: Editora Rocco" required style="width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px;">
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-save" style="flex:2; border:none; cursor:pointer; background-color: #9b59b6;">Salvar</button>
+                    <button type="button" onclick="fecharModal('modalEditora')" class="btn btn-outline" style="flex:1; cursor:pointer;">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Funções Genéricas para os Modais
+        function abrirModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        window.onclick = function(event) {
+            if (event.target.className === 'modal-simples') {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Lógica para Salvar Editora via Modal
+        document.getElementById('form-rapido-editora').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nome-editora').value;
+            const formData = new FormData();
+            formData.append('nome', nome);
+
+            try {
+                const res = await fetch('api/salvar_editora.php', { method: 'POST', body: formData });
+                const data = await res.json();
+                if(data.sucesso) {
+                    alert("✅ Editora cadastrada com sucesso!");
+                    fecharModal('modalEditora');
+                    location.reload();
+                } else { alert("Erro: " + data.erro); }
+            } catch (err) { alert("Erro de conexão."); }
+        });
+
+        // Lógica para Salvar Autor via Modal (Reaproveitada)
+        document.getElementById('form-rapido-autor').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nome-autor').value;
+            const formData = new FormData();
+            formData.append('nome', nome);
+
+            try {
+                const res = await fetch('api/salvar_autor.php', { method: 'POST', body: formData });
+                const data = await res.json();
+                if(data.sucesso) {
+                    alert("✅ Autor cadastrado com sucesso!");
+                    fecharModal('modalAutor');
+                    location.reload();
+                } else { alert("Erro: " + data.erro); }
+            } catch (err) { alert("Erro de conexão."); }
+        });
+    </script>
+</body>
+</html>

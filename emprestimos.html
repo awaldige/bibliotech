@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Empréstimos - BiblioTech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css?v=3.2">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="container nav-flex">
+            <div class="logo"><i class="fas fa-book-reader"></i> Biblio<span>Tech</span></div>
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="livros.html">Livros</a></li>
+                <li><a href="usuarios.html">Leitores</a></li>
+                <li><a href="emprestimos.html" class="active">Empréstimos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-content">
+            
+            <div class="list-box">
+                <h2 style="margin-bottom: 20px;"><i class="fas fa-clock"></i> Empréstimos em Aberto</h2>
+                
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #f0f4f8;">
+                            <th style="padding: 12px;">Leitor</th>
+                            <th style="padding: 12px;">Livro</th>
+                            <th style="padding: 12px;">Data Saída</th>
+                            <th style="padding: 12px;">Previsão</th>
+                            <th style="padding: 12px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-emprestimos">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="action-box">
+                <h2 style="margin-bottom: 20px;"><i class="fas fa-plus-circle"></i> Novo Empréstimo</h2>
+                <form id="form-emprestimo">
+                    <div class="form-group">
+                        <label>Livro</label>
+                        <select id="select-livro" required>
+                            <option value="">Selecione um livro...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Leitor</label>
+                        <select id="select-leitor" required>
+                            <option value="">Selecione um leitor...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Previsão de Devolução</label>
+                        <input type="date" id="data-devolucao" required>
+                    </div>
+                    <button type="submit" id="btn-confirmar" class="btn btn-save" style="width: 100%; border: none; cursor: pointer;">
+                        <i class="fas fa-check"></i> Confirmar Saída
+                    </button>
+                </form>
+            </div>
+
+        </div> </div> <script src="js/emprestimos.js"></script>
+</body>
+</html>
