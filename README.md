@@ -16,6 +16,16 @@ Este projeto foi construído para demonstrar habilidades em integração Fronten
 - **Banco de Dados:** MySQL.
 - **Ícones:** Font Awesome 6.
 
+- ## 🔗 Acesse o projeto online:
+- awaldige.infinityfree.me
+
+-## 📸 Prévia
+
+![IMG_1582](https://github.com/user-attachments/assets/bcec1d47-6d55-4d45-b694-35047e0499e4)
+![IMG_1583](https://github.com/user-attachments/assets/71d0122f-f69a-4325-9b9e-4a8d35fb2d08)
+![IMG_1584](https://github.com/user-attachments/assets/93df6a53-da91-4027-91ba-9aae7baef7c0)
+![IMG_1585](https://github.com/user-attachments/assets/36439439-f9d8-4cd9-bb3e-eb9c15bf4872)
+
 ## 📦 Como Instalar o Projeto
 1. Clone este repositório ou baixe o ZIP.
 2. Coloque os arquivos na pasta `htdocs` do seu servidor local (XAMPP/WAMP).
