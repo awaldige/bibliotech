@@ -1,12 +1,12 @@
 <?php
-$host = "127.0.0.1";
-$user = "root";
-$pass = ""; // Senha padrão do XAMPP é vazia
-$db   = "biblioteca";
-$port = 3308; // <--- A porta específica do seu servidor
+// Dados do Servidor (InfinityFree)
+$host = "sql313.infinityfree.com"; 
+$user = "if0_41153277"; 
+$pass = "Awaldige785143"; /
+$db   = "if0_41153277_bibliotech"; 
 
-// Conecta passando a porta como 5º parâmetro
-$conn = new mysqli($host, $user, $pass, $db, $port);
+
+$conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
     header('Content-Type: application/json');
