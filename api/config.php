@@ -2,9 +2,8 @@
 // Dados do Servidor (InfinityFree)
 $host = "sql313.infinityfree.com"; 
 $user = "if0_41153277"; 
-$pass = "Awaldige785143"; /
+$pass = "Awaldige785143"; 
 $db   = "if0_41153277_bibliotech"; 
-
 
 $conn = new mysqli($host, $user, $pass, $db);
 
