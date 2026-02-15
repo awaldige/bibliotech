@@ -1,11 +1,12 @@
 <?php
-// Dados do Servidor (InfinityFree)
-$host = "sql313.infinityfree.com"; 
-$user = "if0_41153277"; 
-$pass = "Awaldige785143"; 
-$db   = "if0_41153277_bibliotech"; 
+$host = "127.0.0.1";
+$user = "root";
+$pass = "";
+$db   = "biblioteca";
+$port = 3308; 
 
-$conn = new mysqli($host, $user, $pass, $db);
+// Conecta passando a porta como 5º parâmetro
+$conn = new mysqli($host, $user, $pass, $db, $port);
 
 if ($conn->connect_error) {
     header('Content-Type: application/json');
