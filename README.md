@@ -17,7 +17,7 @@ Este projeto foi construído para demonstrar habilidades em integração Fronten
 - **Ícones:** Font Awesome 6.
 
 - ## 🔗 Acesse o projeto online:
-- awaldige.infinityfree.me
+- (https://awaldige.infinityfree.me/bibliotech/)
 
 -## 📸 Prévia
 
