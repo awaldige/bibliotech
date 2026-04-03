@@ -21,10 +21,13 @@ Este projeto foi construído para demonstrar habilidades em integração Fronten
 
 -## 📸 Prévia
 
-![IMG_1582](https://github.com/user-attachments/assets/bcec1d47-6d55-4d45-b694-35047e0499e4)
-![IMG_1583](https://github.com/user-attachments/assets/71d0122f-f69a-4325-9b9e-4a8d35fb2d08)
-![IMG_1584](https://github.com/user-attachments/assets/93df6a53-da91-4027-91ba-9aae7baef7c0)
-![IMG_1585](https://github.com/user-attachments/assets/36439439-f9d8-4cd9-bb3e-eb9c15bf4872)
+![Captura de tela 2026-04-03 185205](https://github.com/user-attachments/assets/49a93dca-ca9d-4231-adf5-5c2de9647dbe)
+![Captura de tela 2026-04-03 185121](https://github.com/user-attachments/assets/a6416112-4ab8-4487-b189-121094352c48)
+![Captura de tela 2026-04-03 192134](https://github.com/user-attachments/assets/10ea27ed-49a1-4908-af14-078f3762793a)
+![Captura de tela 2026-04-03 192107](https://github.com/user-attachments/assets/1a135a6c-4403-4147-9c2d-457e33afa91f)
+![Captura de tela 2026-04-03 191910](https://github.com/user-attachments/assets/fd3ff64f-cb56-432a-a832-24fa449a2843)
+![Captura de tela 2026-04-03 185224](https://github.com/user-attachments/assets/6a73ba93-76af-46cc-9040-2edbebb5c07f)
+
 
 ## 📦 Como Instalar o Projeto
 1. Clone este repositório ou baixe o ZIP.
