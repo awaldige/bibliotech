@@ -1,0 +1,15 @@
+﻿# Backups locais do banco de dados
+/backup_*.sql
+
+# Configurações locais e credenciais
+.env
+.env.*
+!.env.example
+/api/config.local.php
+
+# Backups locais de arquivos do projeto
+*.bak
+*.bak-*
+
+# Arquivo auxiliar local
+/api/deletar_editora.txt

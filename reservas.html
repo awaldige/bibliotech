@@ -1,71 +1,135 @@
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BiblioTech - Reservas</title>
+    <meta name="theme-color" content="#172b4d">
+    <meta name="description" content="Gestão de reservas e fila de espera do acervo BiblioTech.">
+    <title>Reservas | BiblioTech</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=5.0">
 </head>
 <body>
+
     <nav class="top-nav">
         <div class="container nav-flex">
-            <div class="logo"><i class="fas fa-book-reader"></i> Biblio<span>Tech</span></div>
+            <a href="index.html" class="logo">
+                <i class="fas fa-book-reader"></i>
+                Biblio<span>Tech</span>
+            </a>
+
             <ul class="menu">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="livros.html">Livros</a></li>
+                <li><a href="index.html">Visão geral</a></li>
+                <li><a href="livros.html">Acervo</a></li>
                 <li><a href="usuarios.html">Leitores</a></li>
                 <li><a href="emprestimos.html">Empréstimos</a></li>
                 <li><a href="reservas.html" class="active">Reservas</a></li>
+                <li><a href="autores.html">Autores</a></li>
+                <li><a href="editoras.html">Editoras</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="welcome-banner" style="padding: 30px; margin-bottom: 30px;">
-            <h1><i class="fas fa-bookmark"></i> Gestão de Reservas</h1>
-            <p>Gerencie a fila de espera para os títulos mais disputados.</p>
-        </div>
+    <main class="container institutional-dashboard">
 
-        <div class="dashboard-content">
-            <div class="list-box">
-                <h3 style="margin-bottom: 20px;">Fila de Espera Atual</h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="text-align: left; color: var(--text-muted); font-size: 0.85rem;">
-                            <th style="padding: 10px;">LIVRO</th>
-                            <th style="padding: 10px;">LEITOR</th>
-                            <th style="padding: 10px;">DATA</th>
-                            <th style="padding: 10px;">AÇÃO</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-reservas">
-                        </tbody>
-                </table>
+        <header class="dashboard-heading">
+            <div class="dashboard-heading-text">
+                <span class="dashboard-eyebrow">CIRCULAÇÃO DO ACERVO</span>
+                <h1>Gestão de reservas</h1>
+                <p>Organize a fila de espera e acompanhe as solicitações dos leitores.</p>
             </div>
+        </header>
 
-            <div class="action-box">
-                <h3 style="margin-bottom: 20px;">Nova Reserva</h3>
+        <section class="reservation-layout">
+
+            <div class="institutional-panel reservation-form-panel">
+
+                <div class="panel-heading">
+                    <h2><i class="fas fa-bookmark"></i> Nova reserva</h2>
+                    <p>Selecione um livro e o leitor para registrar uma reserva.</p>
+                </div>
+
                 <form id="form-reserva">
-                    <div class="form-group">
-                        <label>Selecionar Livro</label>
-                        <select id="select-livro" required>
-                            <option value="">Carregando...</option>
-                        </select>
+
+                    <div class="reservation-form-fields">
+
+                        <div class="form-group">
+                            <label for="select-livro">Livro <span>*</span></label>
+                            <select id="select-livro" required>
+                                <option value="">Carregando...</option>
+                            </select>
+                            <small>Selecione um título com disponibilidade para reserva.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="select-leitor">Leitor <span>*</span></label>
+                            <select id="select-leitor" required>
+                                <option value="">Carregando...</option>
+                            </select>
+                        </div>
+
                     </div>
-                    <div class="form-group">
-                        <label>Selecionar Leitor</label>
-                        <select id="select-leitor" required>
-                            <option value="">Carregando...</option>
-                        </select>
+
+                    <div class="reservation-form-footer">
+                        <span class="form-required-note">* Campos obrigatórios</span>
+
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-plus-circle"></i>
+                            Criar reserva
+                        </button>
                     </div>
-                    <button type="submit" class="btn btn-save" style="width: 100%; border: none; cursor: pointer;">
-                        <i class="fas fa-plus-circle"></i> Criar Reserva
-                    </button>
+
                 </form>
             </div>
-        </div>
-    </div>
+
+            <div class="institutional-panel reservation-list-panel">
+
+                <div class="panel-heading">
+                    <h2><i class="fas fa-list-ol"></i> Fila de espera atual</h2>
+                    <p>Consulte as reservas pendentes e gerencie sua situação.</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Livro</th>
+                                <th>Leitor</th>
+                                <th>Data da reserva</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tabela-reservas">
+                            <tr>
+                                <td colspan="4" class="loading-state">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    Carregando reservas...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="reservation-table-note">
+                    <i class="fas fa-info-circle"></i>
+                    Você pode efetivar uma reserva para gerar um empréstimo ou cancelá-la preservando o histórico.
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer class="dashboard-footer">
+            <span>BiblioTech — Gestão de Biblioteca</span>
+            <span>AW TECHNOLOGY</span>
+        </footer>
+
+    </main>
 
     <script src="js/reservas.js"></script>
 </body>
