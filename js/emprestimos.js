@@ -29,27 +29,57 @@ document.addEventListener('DOMContentLoaded', () => {
 async function popularSelects() {
     try {
         const resLivros = await fetch('api/listar_livros.php');
-        const livros = await resLivros.json();
-        const selectLivro = document.getElementById('select-livro');
-        
-        if (selectLivro) {
-            selectLivro.innerHTML = '<option value="">Selecione um livro...</option>' + 
-                livros.map(l => `<option value="${l.id}">${l.titulo}</option>`).join('');
+
+        if (!resLivros.ok) {
+            throw new Error("Erro ao carregar livros.");
         }
 
-        const resLeitores = await fetch('api/listar_usuarios.php'); 
+        const livros = await resLivros.json();
+        const selectLivro = document.getElementById('select-livro');
+
+        if (selectLivro) {
+            selectLivro.innerHTML =
+                '<option value="">Selecione um livro...</option>' +
+                livros.map(l => {
+                    const disponiveis = Number(l.disponiveis);
+                    const indisponivel = disponiveis <= 0;
+
+                    const descricao = indisponivel
+                        ? 'Indisponível'
+                        : `Disponíveis: ${disponiveis}`;
+
+                    return `
+                        <option
+                            value="${l.id}"
+                            ${indisponivel ? 'disabled' : ''}
+                        >
+                            ${l.titulo} — ${descricao}
+                        </option>
+                    `;
+                }).join('');
+        }
+
+        const resLeitores = await fetch('api/listar_usuarios.php');
+
+        if (!resLeitores.ok) {
+            throw new Error("Erro ao carregar leitores.");
+        }
+
         const leitores = await resLeitores.json();
         const selectLeitor = document.getElementById('select-leitor');
 
         if (selectLeitor) {
-            selectLeitor.innerHTML = '<option value="">Selecione um leitor...</option>' + 
-                leitores.map(u => `<option value="${u.id}">${u.nome}</option>`).join('');
+            selectLeitor.innerHTML =
+                '<option value="">Selecione um leitor...</option>' +
+                leitores.map(u =>
+                    `<option value="${u.id}">${u.nome}</option>`
+                ).join('');
         }
+
     } catch (e) {
         console.error("Erro ao popular selects:", e);
     }
 }
-
 /**
  * CARREGA A TABELA DE EMPRÉSTIMOS ATIVOS
  */
@@ -62,7 +92,7 @@ async function carregarEmprestimosAtivos() {
         if (!res.ok) throw new Error("Arquivo listar_emprestimos.php não encontrado.");
 
         const dados = await res.json();
-        
+
         if (!Array.isArray(dados) || dados.length === 0) {
             tabela.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#666;">Nenhum empréstimo ativo no momento.</td></tr>';
             return;
@@ -90,9 +120,9 @@ async function carregarEmprestimosAtivos() {
             </tr>
         `).join('');
 
-    } catch (e) { 
+    } catch (e) {
         console.error("Erro ao carregar empréstimos:", e);
-        tabela.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center; padding:20px;">Erro ao carregar dados: ${e.message}</td></tr>`; 
+        tabela.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center; padding:20px;">Erro ao carregar dados: ${e.message}</td></tr>`;
     }
 }
 
@@ -100,21 +130,33 @@ async function carregarEmprestimosAtivos() {
  * FUNÇÃO PARA RENOVAR EMPRÉSTIMO (+7 DIAS)
  */
 async function renovarEmprestimo(id) {
-    if (confirm("Deseja renovar este empréstimo por mais 7 dias a partir de hoje?")) {
-        try {
-            const res = await fetch(`api/renovar_emprestimo.php?id=${id}`);
-            const data = await res.json();
+    if (!confirm("Deseja renovar este empréstimo por mais 7 dias a partir de hoje?")) {
+        return;
+    }
 
-            if (data.sucesso) {
-                alert("✅ Empréstimo renovado com sucesso!");
-                carregarEmprestimosAtivos();
-            } else {
-                alert("❌ Erro ao renovar: " + data.erro);
-            }
-        } catch (e) {
-            console.error("Erro na renovação:", e);
-            alert("❌ Erro de conexão com o servidor.");
+    try {
+        const formData = new FormData();
+        formData.append('id', id);
+
+        const res = await fetch('api/renovar_emprestimo.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.sucesso) {
+            alert("❌ Erro ao renovar: " + (data.erro || "Falha na renovação."));
+            return;
         }
+
+        alert("✅ Empréstimo renovado com sucesso! Nova devolução: " + data.nova_data);
+
+        await carregarEmprestimosAtivos();
+
+    } catch (e) {
+        console.error("Erro na renovação:", e);
+        alert("❌ Erro de conexão com o servidor.");
     }
 }
 
@@ -123,7 +165,7 @@ async function renovarEmprestimo(id) {
  */
 async function salvarEmprestimo(e) {
     e.preventDefault();
-    
+
     const btn = document.getElementById('btn-confirmar');
     const idLivro = document.getElementById('select-livro').value;
     const idLeitor = document.getElementById('select-leitor').value;
@@ -143,15 +185,15 @@ async function salvarEmprestimo(e) {
     formData.append('data_devolucao', dataDev);
 
     try {
-        const res = await fetch('api/salvar_emprestimo.php', { 
-            method: 'POST', 
-            body: formData 
+        const res = await fetch('api/salvar_emprestimo.php', {
+            method: 'POST',
+            body: formData
         });
         const data = await res.json();
 
         if (data.sucesso) {
             alert("✅ Empréstimo registrado com sucesso!");
-            location.reload(); 
+            location.reload();
         } else {
             alert("❌ Erro: " + (data.erro || "Falha ao salvar"));
             btn.disabled = false;
@@ -171,17 +213,32 @@ async function salvarEmprestimo(e) {
 async function confirmarDevolucao(id) {
     if (confirm("Deseja confirmar a devolução deste livro?")) {
         try {
-            const res = await fetch(`api/devolver_livro.php?id=${id}`);
+            const formData = new FormData();
+            formData.append('id', id);
+
+            const res = await fetch('api/devolver_livro.php', {
+                method: 'POST',
+                body: formData
+            });
+
             const data = await res.json();
-            
-            if (data.sucesso) {
-                carregarEmprestimosAtivos();
-                if (typeof atualizarContadores === 'function') atualizarContadores();
-            } else {
-                alert("Erro ao processar devolução: " + data.erro);
+
+            if (!res.ok || !data.sucesso) {
+                alert("Erro ao processar devolução: " + (data.erro || "Falha ao devolver livro."));
+                return;
             }
+
+            alert("✅ Devolução registrada com sucesso!");
+
+            await carregarEmprestimosAtivos();
+
+            if (typeof atualizarContadores === 'function') {
+                atualizarContadores();
+            }
+
         } catch (e) {
-            alert("Erro na comunicação com o servidor.");
+            console.error("Erro na devolução:", e);
+            alert("Erro na comunicação com o servidor. Consulte o Console.");
         }
     }
 }

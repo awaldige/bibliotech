@@ -1,46 +1,94 @@
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Carregar autores e editoras nos selects
+    const form = document.getElementById('form-adicionar-livro');
+    const selectAutor = document.getElementById('select-autor');
+    const selectEditora = document.getElementById('select-editora');
+    const botaoSalvar = form.querySelector('[type="submit"]');
+
+    // Carrega autores e editoras.
     async function carregarAuxiliares() {
         try {
-            const res = await fetch('api/buscar_auxiliares.php');
-            const data = await res.json();
+            const resposta = await fetch('api/buscar_auxiliares.php');
 
-            const selectAutor = document.getElementById('select-autor');
-            const selectEditora = document.getElementById('select-editora');
+            if (!resposta.ok) {
+                throw new Error('Falha ao consultar autores e editoras.');
+            }
 
-            selectAutor.innerHTML = '<option value="">Selecione um Autor</option>' + 
-                data.autores.map(a => `<option value="${a.id}">${a.nome}</option>`).join('');
+            const dados = await resposta.json();
 
-            selectEditora.innerHTML = '<option value="">Selecione uma Editora</option>' + 
-                data.editoras.map(e => `<option value="${e.id}">${e.nome}</option>`).join('');
-        } catch (e) {
-            console.error("Erro ao carregar auxiliares");
+            if (!Array.isArray(dados.autores) ||
+                !Array.isArray(dados.editoras)) {
+                throw new Error('Formato de dados inválido.');
+            }
+
+            preencherSelect(selectAutor, dados.autores, 'Selecione um autor');
+            preencherSelect(selectEditora, dados.editoras, 'Selecione uma editora');
+
+        } catch (erro) {
+            console.error('Erro ao carregar auxiliares:', erro);
+
+            selectAutor.replaceChildren(
+                new Option('Não foi possível carregar autores', '')
+            );
+
+            selectEditora.replaceChildren(
+                new Option('Não foi possível carregar editoras', '')
+            );
         }
     }
 
-    // 2. Enviar Formulário
-    const form = document.getElementById('form-adicionar-livro');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(form);
-        
+    // Preenche os selects com segurança.
+    function preencherSelect(select, itens, mensagem) {
+        select.replaceChildren(new Option(mensagem, ''));
+
+        itens.forEach(item => {
+            const opcao = new Option(
+                String(item.nome ?? '').trim(),
+                String(item.id ?? '')
+            );
+
+            select.add(opcao);
+        });
+    }
+
+    // Envia o cadastro.
+    form.addEventListener('submit', async evento => {
+        evento.preventDefault();
+
+        if (!form.reportValidity()) {
+            return;
+        }
+
+        const textoOriginal = botaoSalvar.innerHTML;
+
+        botaoSalvar.disabled = true;
+        botaoSalvar.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+
         try {
-            const response = await fetch('api/salvar_livro.php', {
+            const resposta = await fetch('api/salvar_livro.php', {
                 method: 'POST',
-                body: formData
+                body: new FormData(form)
             });
 
-            const resultado = await response.json();
-            
-            if (resultado.sucesso) {
-                alert("Livro cadastrado com sucesso!");
-                window.location.href = 'livros.html';
-            } else {
-                alert("Erro ao salvar: " + resultado.erro);
+            const resultado = await resposta.json();
+
+            if (!resposta.ok || !resultado.sucesso) {
+                throw new Error(
+                    resultado.erro || 'Não foi possível cadastrar o livro.'
+                );
             }
-        } catch (error) {
-            alert("Erro na conexão com o servidor.");
+
+            alert('Livro cadastrado com sucesso!');
+            window.location.href = 'livros.html';
+
+        } catch (erro) {
+            console.error('Erro ao salvar livro:', erro);
+            alert(erro.message || 'Erro na conexão com o servidor.');
+
+        } finally {
+            botaoSalvar.disabled = false;
+            botaoSalvar.innerHTML = textoOriginal;
         }
     });
 

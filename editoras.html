@@ -1,124 +1,200 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Editoras - BiblioTech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#172b4d">
+    <meta name="description" content="Gerenciamento de editoras cadastradas no sistema BiblioTech.">
+
+    <title>Editoras | BiblioTech</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=2.3">
-    <style>
-        /* Estilos para o Modal de Edição */
-        .modal-simples {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(4px);
-        }
-        .modal-content {
-            width: 90%;
-            max-width: 400px;
-            background: white;
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease;
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            box-sizing: border-box;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css?v=5.0">
 </head>
 <body>
 
     <nav class="top-nav">
         <div class="container nav-flex">
-            <div class="logo"><i class="fas fa-book-reader"></i> Biblio<span>Tech</span></div>
+            <div class="logo">
+                <i class="fas fa-book-reader"></i>
+                Biblio<span>Tech</span>
+            </div>
+
             <ul class="menu">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="livros.html">Livros</a></li>
+                <li><a href="index.html">Visão geral</a></li>
+                <li><a href="livros.html">Acervo</a></li>
+                <li><a href="usuarios.html">Leitores</a></li>
+                <li><a href="emprestimos.html">Empréstimos</a></li>
+                <li><a href="reservas.html">Reservas</a></li>
                 <li><a href="autores.html">Autores</a></li>
                 <li><a href="editoras.html" class="active">Editoras</a></li>
-                <li><a href="usuarios.html">Leitores</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="dashboard-content">
-            <div class="action-box">
-                <h2><i class="fas fa-building"></i> Nova Editora</h2>
+    <main class="container institutional-dashboard">
+
+        <header class="page-header">
+            <div>
+                <span class="page-eyebrow">CADASTROS DO ACERVO</span>
+                <h1>Gestão de editoras</h1>
+                <p>Cadastre e mantenha os dados das editoras vinculadas ao acervo.</p>
+            </div>
+        </header>
+
+        <section class="publisher-layout">
+
+            <div class="institutional-panel publisher-form-panel">
+                <div class="publisher-panel-heading">
+                    <div class="publisher-panel-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <h2>Nova editora</h2>
+                        <p>Informe os dados para cadastrar uma editora.</p>
+                    </div>
+                </div>
+
                 <form id="form-editora">
                     <div class="form-group">
-                        <label>Nome da Editora</label>
-                        <input type="text" id="nome-editora" required placeholder="Ex: Companhia das Letras">
+                        <label for="nome-editora">Nome da editora <span aria-hidden="true">*</span></label>
+                        <input
+                            type="text"
+                            id="nome-editora"
+                            required
+                            maxlength="255"
+                            placeholder="Ex.: Companhia das Letras"
+                        >
                     </div>
+
                     <div class="form-group">
-                        <label>Localização (Cidade/País)</label>
-                        <input type="text" id="local-editora" placeholder="Ex: São Paulo, Brasil">
+                        <label for="local-editora">Localização</label>
+                        <input
+                            type="text"
+                            id="local-editora"
+                            maxlength="150"
+                            placeholder="Ex.: São Paulo, Brasil"
+                        >
                     </div>
-                    <button type="submit" class="btn btn-save" style="width: 100%; border: none; cursor: pointer;">
-                        <i class="fas fa-plus"></i> Registrar Editora
-                    </button>
+
+                    <div class="publisher-form-footer">
+                        <span class="form-required-note">* Campo obrigatório</span>
+                        <button type="submit" class="btn btn-save publisher-submit">
+                            <i class="fas fa-plus"></i>
+                            Registrar editora
+                        </button>
+                    </div>
                 </form>
             </div>
 
-            <div class="list-box">
-                <h2><i class="fas fa-th-list"></i> Editoras Parceiras</h2>
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Editora</th>
-                            <th>Localização</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-editoras">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+            <div class="institutional-panel publisher-list-panel">
+                <div class="publisher-list-heading">
+                    <div>
+                        <span class="publisher-section-label">BASE DE CADASTRO</span>
+                        <h2>Editoras cadastradas</h2>
+                        <p>Consulte e gerencie as editoras registradas no sistema.</p>
+                    </div>
 
-    <div id="modalEditarEditora" class="modal-simples">
-        <div class="modal-content">
-            <h3 style="margin-bottom: 15px;"><i class="fas fa-edit"></i> Editar Editora</h3>
+                    <div class="publisher-list-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Editora</th>
+                                <th>Localização</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tabela-editoras">
+                            <tr>
+                                <td colspan="3">Carregando editoras...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="publisher-table-note">
+                    <i class="fas fa-info-circle"></i>
+                    Editoras vinculadas a livros não podem ser excluídas.
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div
+        id="modalEditarEditora"
+        class="modal-simples publisher-modal"
+        style="display:none;"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal-editora"
+    >
+        <div class="modal-content publisher-modal-content">
+
+            <div class="publisher-modal-heading">
+                <div class="publisher-panel-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+
+                <div>
+                    <h3 id="titulo-modal-editora">Editar editora</h3>
+                    <p>Atualize as informações do cadastro.</p>
+                </div>
+            </div>
+
             <form id="form-editar-editora">
-                <input type="hidden" id="edit-id"> <div class="form-group">
-                    <label>Nome da Editora</label>
-                    <input type="text" id="edit-nome" required>
+                <input type="hidden" id="edit-id">
+
+                <div class="form-group">
+                    <label for="edit-nome">Nome da editora</label>
+                    <input
+                        type="text"
+                        id="edit-nome"
+                        required
+                        maxlength="255"
+                    >
                 </div>
-                
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Localização</label>
-                    <input type="text" id="edit-local">
+
+                <div class="form-group">
+                    <label for="edit-local">Localização</label>
+                    <input
+                        type="text"
+                        id="edit-local"
+                        maxlength="150"
+                    >
                 </div>
-                
-                <div style="display: flex; gap: 10px; margin-top: 25px;">
-                    <button type="submit" class="btn btn-save" style="flex: 2; border: none; cursor: pointer;">
-                        Salvar Alterações
+
+                <div class="modal-actions publisher-modal-actions">
+                    <button type="submit" class="btn btn-save">
+                        <i class="fas fa-save"></i>
+                        Salvar alterações
                     </button>
-                    <button type="button" onclick="fecharModal('modalEditarEditora')" class="btn btn-outline" style="flex: 1; cursor: pointer;">
+
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        onclick="fecharModal('modalEditarEditora')"
+                    >
                         Cancelar
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
+
+    <footer class="site-footer">
+        <p>BiblioTech — Sistema demonstrativo de gestão de biblioteca</p>
+    </footer>
 
     <script src="js/editoras.js"></script>
 </body>

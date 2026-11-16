@@ -1,98 +1,218 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Leitores - BiblioTech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#172b4d">
+
+    <title>Leitores | BiblioTech</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=2.5">
+    <link rel="stylesheet" href="css/style.css?v=5.0">
 </head>
 <body>
 
     <nav class="top-nav">
         <div class="container nav-flex">
-            <div class="logo"><i class="fas fa-book-reader"></i> Biblio<span>Tech</span></div>
+            <a href="index.html" class="logo">
+                <i class="fas fa-book-reader"></i>
+                Biblio<span>Tech</span>
+            </a>
+
             <ul class="menu">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="livros.html">Livros</a></li>
+                <li><a href="index.html">Visão geral</a></li>
+                <li><a href="livros.html">Acervo</a></li>
+                <li><a href="usuarios.html" class="active">Leitores</a></li>
+                <li><a href="emprestimos.html">Empréstimos</a></li>
+                <li><a href="reservas.html">Reservas</a></li>
                 <li><a href="autores.html">Autores</a></li>
                 <li><a href="editoras.html">Editoras</a></li>
-                <li><a href="usuarios.html" class="active">Leitores</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="dashboard-content">
-            <div class="action-box">
-                <h2><i class="fas fa-user-plus"></i> Novo Leitor</h2>
+    <main class="container institutional-dashboard">
+
+        <header class="dashboard-heading">
+            <div class="dashboard-heading-text">
+                <span class="dashboard-eyebrow">GESTÃO DE LEITORES</span>
+                <h1>Cadastro de leitores</h1>
+                <p>Gerencie os dados dos leitores vinculados à biblioteca.</p>
+            </div>
+        </header>
+
+        <div class="reader-layout">
+
+            <section class="institutional-panel reader-form-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2><i class="fas fa-user-plus"></i> Novo leitor</h2>
+                        <p>Preencha os dados para cadastrar um leitor.</p>
+                    </div>
+                </div>
+
                 <form id="form-usuario">
-                    <div class="form-group">
-                        <label>Nome Completo</label>
-                        <input type="text" id="nome-usuario" required placeholder="Nome do aluno ou leitor">
+
+                    <div class="reader-form-fields">
+
+                        <div class="form-group">
+                            <label for="nome-usuario">Nome completo *</label>
+                            <input
+                                type="text"
+                                id="nome-usuario"
+                                maxlength="255"
+                                required
+                                placeholder="Nome do aluno ou leitor"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email-usuario">E-mail *</label>
+                            <input
+                                type="email"
+                                id="email-usuario"
+                                maxlength="255"
+                                required
+                                placeholder="exemplo@email.com"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tel-usuario">Telefone / WhatsApp</label>
+                            <input
+                                type="text"
+                                id="tel-usuario"
+                                placeholder="(00) 00000-0000"
+                            >
+                        </div>
+
                     </div>
-                    <div class="form-group">
-                        <label>E-mail</label>
-                        <input type="email" id="email-usuario" required placeholder="exemplo@email.com">
+
+                    <div class="reader-form-actions">
+                        <span class="form-required-note">* Campos obrigatórios</span>
+
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-user-check"></i>
+                            Cadastrar leitor
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label>Telefone / WhatsApp</label>
-                        <input type="text" id="tel-usuario" placeholder="(00) 00000-0000">
-                    </div>
-                    <button type="submit" class="btn btn-save" style="width: 100%; border: none; cursor: pointer;">
-                        <i class="fas fa-user-check"></i> Cadastrar Leitor
-                    </button>
+
                 </form>
-            </div>
+            </section>
 
-            <div class="list-box">
-                <h2><i class="fas fa-users"></i> Leitores Ativos</h2>
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Icone</th>
-                            <th>Leitor</th>
-                            <th>Contato</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-usuarios">
+            <section class="institutional-panel reader-list-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2><i class="fas fa-users"></i> Leitores cadastrados</h2>
+                        <p>Consulte e gerencie os registros dos leitores.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" aria-label="Tipo"></th>
+                                <th scope="col">Leitor</th>
+                                <th scope="col">Contato</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tabela-usuarios">
+                            <tr>
+                                <td colspan="4" class="table-empty">
+                                    Carregando leitores...
+                                </td>
+                            </tr>
                         </tbody>
-                </table>
-            </div>
+                    </table>
+                </div>
+
+            </section>
+
         </div>
-    </div>
-<div id="modalEditarUser" class="modal-simples" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center; backdrop-filter: blur(4px);">
-        <div class="modal-content" style="background:white; padding:30px; border-radius:20px; width:90%; max-width:400px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-            <h3 style="margin-bottom: 20px;"><i class="fas fa-user-edit"></i> Editar Leitor</h3>
-            
+
+        <footer class="dashboard-footer">
+            <span>BiblioTech — Gestão de Biblioteca</span>
+            <span>AW TECHNOLOGY</span>
+        </footer>
+
+    </main>
+
+    <!-- Modal de edição -->
+    <div
+        id="modalEditarUser"
+        class="modal-simples"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal-user"
+        style="display:none;"
+    >
+        <div class="modal-content reader-modal-content">
+
+            <div class="reader-modal-heading">
+                <div>
+                    <span class="dashboard-eyebrow">GESTÃO DE LEITORES</span>
+                    <h2 id="titulo-modal-user">
+                        <i class="fas fa-user-edit"></i>
+                        Editar leitor
+                    </h2>
+                </div>
+
+                <button
+                    type="button"
+                    class="reader-modal-close"
+                    onclick="fecharModalUser()"
+                    aria-label="Fechar modal"
+                >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
             <form id="form-editar-user">
+
                 <input type="hidden" id="edit-id-user">
-                
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">Nome Completo</label>
-                    <input type="text" id="edit-nome-user" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
-                </div>
-                
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">E-mail</label>
-                    <input type="email" id="edit-email-user" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+
+                <div class="form-group">
+                    <label for="edit-nome-user">Nome completo *</label>
+                    <input type="text" id="edit-nome-user" required>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="display:block; margin-bottom:5px;">Telefone / WhatsApp</label>
-                    <input type="text" id="edit-tel-user" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;" placeholder="(00) 00000-0000">
+                <div class="form-group">
+                    <label for="edit-email-user">E-mail *</label>
+                    <input type="email" id="edit-email-user" required>
                 </div>
 
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" class="btn btn-save" style="flex:2; padding:12px; border:none; border-radius:8px; cursor:pointer;">
-                        Atualizar Dados
-                    </button>
-                    <button type="button" onclick="fecharModalUser()" class="btn-outline" style="flex:1; padding:12px; background:white; border:1px solid #ccc; border-radius:8px; cursor:pointer;">
+                <div class="form-group">
+                    <label for="edit-tel-user">Telefone / WhatsApp</label>
+                    <input
+                        type="text"
+                        id="edit-tel-user"
+                        placeholder="(00) 00000-0000"
+                    >
+                </div>
+
+                <div class="reader-modal-actions">
+                    <button
+                        type="button"
+                        onclick="fecharModalUser()"
+                        class="btn btn-outline"
+                    >
                         Cancelar
                     </button>
+
+                    <button type="submit" class="btn btn-save">
+                        <i class="fas fa-check"></i>
+                        Atualizar dados
+                    </button>
                 </div>
+
             </form>
         </div>
     </div>

@@ -1,92 +1,197 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Autores - BiblioTech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#172b4d">
+    <meta name="description" content="Gerenciamento de autores cadastrados no acervo da BiblioTech.">
+
+    <title>Autores | BiblioTech</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=2.2">
+    <link rel="stylesheet" href="css/style.css?v=5.0">
 </head>
 <body>
 
     <nav class="top-nav">
         <div class="container nav-flex">
-            <div class="logo"><i class="fas fa-book-reader"></i> Biblio<span>Tech</span></div>
+            <div class="logo">
+                <i class="fas fa-book-reader"></i>
+                Biblio<span>Tech</span>
+            </div>
+
             <ul class="menu">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="livros.html">Livros</a></li>
+                <li><a href="index.html">Visão geral</a></li>
+                <li><a href="livros.html">Acervo</a></li>
+                <li><a href="usuarios.html">Leitores</a></li>
+                <li><a href="emprestimos.html">Empréstimos</a></li>
+                <li><a href="reservas.html">Reservas</a></li>
                 <li><a href="autores.html" class="active">Autores</a></li>
                 <li><a href="editoras.html">Editoras</a></li>
-                <li><a href="usuarios.html">Leitores</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="dashboard-content">
-            <div class="action-box">
-                <h2><i class="fas fa-pen-nib"></i> Novo Autor</h2>
+    <main class="container institutional-dashboard">
+
+        <header class="page-header">
+            <div>
+                <span class="page-eyebrow">CADASTROS DO ACERVO</span>
+                <h1>Gestão de autores</h1>
+                <p>Cadastre e mantenha os dados dos autores vinculados ao acervo.</p>
+            </div>
+        </header>
+
+        <section class="author-layout">
+
+            <div class="institutional-panel author-form-panel">
+                <div class="author-panel-heading">
+                    <div class="author-panel-icon">
+                        <i class="fas fa-pen-nib"></i>
+                    </div>
+                    <div>
+                        <h2>Novo autor</h2>
+                        <p>Informe os dados para cadastrar um autor.</p>
+                    </div>
+                </div>
+
                 <form id="form-autor">
                     <div class="form-group">
-                        <label>Nome do Autor</label>
-                        <input type="text" id="nome-autor" required placeholder="Ex: Machado de Assis">
+                        <label for="nome-autor">Nome do autor <span aria-hidden="true">*</span></label>
+                        <input
+                            type="text"
+                            id="nome-autor"
+                            required
+                            maxlength="255"
+                            placeholder="Ex.: Machado de Assis"
+                        >
                     </div>
+
                     <div class="form-group">
-                        <label>Nacionalidade</label>
-                        <input type="text" id="nacionalidade-autor" placeholder="Ex: Brasileira">
+                        <label for="nacionalidade-autor">Nacionalidade</label>
+                        <input
+                            type="text"
+                            id="nacionalidade-autor"
+                            maxlength="100"
+                            placeholder="Ex.: Brasileira"
+                        >
                     </div>
-                    <button type="submit" class="btn btn-add" style="width: 100%; border: none; cursor: pointer;">
-                        <i class="fas fa-save"></i> Salvar Autor
-                    </button>
+
+                    <div class="author-form-footer">
+                        <span class="form-required-note">* Campo obrigatório</span>
+                        <button type="submit" class="btn btn-add author-submit">
+                            <i class="fas fa-save"></i>
+                            Salvar autor
+                        </button>
+                    </div>
                 </form>
             </div>
 
-            <div class="list-box">
-                <h2><i class="fas fa-list"></i> Autores Cadastrados</h2>
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Nacionalidade</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-autores">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+            <div class="institutional-panel author-list-panel">
+                <div class="author-list-heading">
+                    <div>
+                        <span class="author-section-label">BASE DE CADASTRO</span>
+                        <h2>Autores cadastrados</h2>
+                        <p>Consulte e gerencie os autores registrados no sistema.</p>
+                    </div>
+                    <div class="author-list-icon">
+                        <i class="fas fa-address-book"></i>
+                    </div>
+                </div>
 
-    <div id="modalEditarAutor" class="modal-simples" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center; backdrop-filter: blur(4px);">
-        <div class="modal-content" style="background:white; padding:30px; border-radius:20px; width:90%; max-width:400px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-            <h3 style="margin-bottom: 20px;"><i class="fas fa-edit"></i> Editar Autor</h3>
-            
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Nacionalidade</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-autores">
+                            <tr>
+                                <td colspan="3">Carregando autores...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="author-table-note">
+                    <i class="fas fa-info-circle"></i>
+                    Autores vinculados a livros não podem ser excluídos.
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div
+        id="modalEditarAutor"
+        class="modal-simples author-modal"
+        style="display:none;"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal-autor"
+    >
+        <div class="modal-content author-modal-content">
+
+            <div class="author-modal-heading">
+                <div class="author-panel-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <div>
+                    <h3 id="titulo-modal-autor">Editar autor</h3>
+                    <p>Atualize as informações do cadastro.</p>
+                </div>
+            </div>
+
             <form id="form-editar-autor">
                 <input type="hidden" id="edit-id-autor">
-                
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display:block; margin-bottom:5px;">Nome do Autor</label>
-                    <input type="text" id="edit-nome-autor" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
-                </div>
-                
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="display:block; margin-bottom:5px;">Nacionalidade</label>
-                    <input type="text" id="edit-nacionalidade-autor" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+
+                <div class="form-group">
+                    <label for="edit-nome-autor">Nome do autor</label>
+                    <input
+                        type="text"
+                        id="edit-nome-autor"
+                        required
+                        maxlength="255"
+                    >
                 </div>
 
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" class="btn btn-save" style="flex:2; padding:12px; border:none; border-radius:8px; cursor:pointer; background-color: #27ae60; color: white;">
-                        Salvar Alterações
+                <div class="form-group">
+                    <label for="edit-nacionalidade-autor">Nacionalidade</label>
+                    <input
+                        type="text"
+                        id="edit-nacionalidade-autor"
+                        maxlength="100"
+                    >
+                </div>
+
+                <div class="modal-actions author-modal-actions">
+                    <button type="submit" class="btn btn-save">
+                        <i class="fas fa-save"></i>
+                        Salvar alterações
                     </button>
-                    <button type="button" onclick="fecharModalAutor()" class="btn-outline" style="flex:1; padding:12px; background:white; border:1px solid #ccc; border-radius:8px; cursor:pointer;">
+
+                    <button
+                        type="button"
+                        class="btn-outline"
+                        onclick="fecharModalAutor()"
+                    >
                         Cancelar
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
+
+    <footer class="site-footer">
+        <p>BiblioTech — Sistema demonstrativo de gestão de biblioteca</p>
+    </footer>
 
     <script src="js/autores.js"></script>
 </body>

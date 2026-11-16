@@ -1,69 +1,189 @@
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Acervo de Livros - BiblioTech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Consulte e gerencie o acervo de livros da plataforma demonstrativa BiblioTech.">
+
+    <title>Acervo de Livros | BiblioTech</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-        .modal-simples { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 9999; }
-        .modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; }
-    </style>
+    <link rel="stylesheet" href="css/style.css?v=5.0">
 </head>
+
 <body>
-    <nav class="top-nav">
+
+    <nav class="top-nav" aria-label="Navegação principal">
         <div class="container nav-flex">
-            <div class="logo"><i class="fas fa-book-reader"></i> Biblio<span>Tech</span></div>
+
+            <a href="index.html" class="logo">
+                <i class="fas fa-book-reader" aria-hidden="true"></i>
+                Biblio<span>Tech</span>
+            </a>
+
             <ul class="menu">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="livros.html" class="active">Livros</a></li>
-                <li><a href="usuarios.html">Leitores</a></li>
-                <li><a href="listar_emprestimos.html">Empréstimos</a></li>
+                <li>
+                    <a href="index.html">Visão geral</a>
+                </li>
+                <li>
+                    <a href="livros.html" class="active" aria-current="page">Acervo</a>
+                </li>
+                <li>
+                    <a href="usuarios.html">Leitores</a>
+                </li>
+                <li>
+                    <a href="emprestimos.html">Empréstimos</a>
+                </li>
+                <li>
+                    <a href="reservas.html">Reservas</a>
+                </li>
+                <li>
+                    <a href="autores.html">Autores</a>
+                </li>
+                <li>
+                    <a href="editoras.html">Editoras</a>
+                </li>
             </ul>
+
         </div>
     </nav>
 
-    <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
-            <h2><i class="fas fa-book"></i> Acervo de Livros</h2>
-            <a href="adicionar.html" class="btn-add"><i class="fas fa-plus"></i> Novo Livro</a>
-        </div>
+    <main class="container institutional-dashboard">
 
-        <table class="custom-table">
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Autor</th>
-                    <th>Qtd</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="tabela-livros"></tbody>
-        </table>
-    </div>
+        <header class="dashboard-heading">
+            <div class="dashboard-heading-text">
+                <span class="dashboard-eyebrow">
+                    <i class="fas fa-landmark" aria-hidden="true"></i>
+                    GESTÃO DO ACERVO
+                </span>
 
-    <div id="modalEditarLivro" class="modal-simples">
+                <h1>Acervo de livros</h1>
+
+                <p>
+                    Consulte os títulos cadastrados e mantenha o catálogo da biblioteca organizado.
+                </p>
+            </div>
+
+            <a href="adicionar.html" class="btn-add">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+                Novo livro
+            </a>
+        </header>
+
+        <section class="institutional-panel book-catalog-panel"
+                 aria-labelledby="titulo-acervo">
+
+            <div class="panel-heading">
+                <h2 id="titulo-acervo">
+                    <i class="fas fa-book" aria-hidden="true"></i>
+                    Catálogo bibliográfico
+                </h2>
+
+                <p>
+                    Relação de obras registradas no sistema
+                </p>
+            </div>
+
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" aria-label="Tipo"></th>
+                            <th scope="col">Título</th>
+                            <th scope="col">Autor</th>
+                            <th scope="col">Editora</th>
+                            <th scope="col">Exemplares</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tabela-livros">
+                        <tr>
+                            <td colspan="6" class="table-empty">
+                                Carregando acervo...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <footer class="dashboard-footer">
+            <span>BiblioTech — Gestão de Biblioteca</span>
+            <span>Projeto demonstrativo desenvolvido por AW TECHNOLOGY</span>
+        </footer>
+
+    </main>
+
+    <div
+        id="modalEditarLivro"
+        class="modal-simples"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal-livro"
+    >
         <div class="modal-content">
-            <h3>Editar Livro</h3>
+
+            <h2 id="titulo-modal-livro">
+                <i class="fas fa-book" aria-hidden="true"></i>
+                Editar livro
+            </h2>
+
             <form id="form-editar-livro">
+
                 <input type="hidden" id="edit-id">
+
                 <div class="form-group">
-                    <label>Título</label>
-                    <input type="text" id="edit-titulo" required style="width:100%; padding:10px; margin-top:5px;">
+                    <label for="edit-titulo">Título do livro</label>
+                    <input
+                        type="text"
+                        id="edit-titulo"
+                        required
+                        maxlength="255"
+                    >
                 </div>
+
                 <div class="form-group">
-                    <label>Quantidade</label>
-                    <input type="number" id="edit-qtd" required style="width:100%; padding:10px; margin-top:5px;">
+                    <label for="edit-qtd">Quantidade de exemplares</label>
+                    <input
+                        type="number"
+                        id="edit-qtd"
+                        required
+                        min="0"
+                        step="1"
+                    >
                 </div>
-                <div style="margin-top:20px; display:flex; gap:10px;">
-                    <button type="submit" class="btn-save">Salvar</button>
-                    <button type="button" onclick="fecharModal()" class="btn-outline">Cancelar</button>
+
+                <div class="modal-actions">
+
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-save" aria-hidden="true"></i>
+                        Salvar alterações
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="fecharModal()"
+                        class="btn-outline"
+                    >
+                        Cancelar
+                    </button>
+
                 </div>
+
             </form>
+
         </div>
     </div>
 
     <script src="js/livros.js"></script>
+
 </body>
 </html>

@@ -7,13 +7,41 @@ document.addEventListener('DOMContentLoaded', () => {
 async function carregarLivrosSelect() {
     const select = document.getElementById('select-livro');
     if (!select) return;
+
     try {
         const res = await fetch('api/listar_livros.php');
+
+        if (!res.ok) {
+            throw new Error("Erro ao carregar livros.");
+        }
+
         const livros = await res.json();
-        select.innerHTML = '<option value="">Selecione um Livro...</option>' + 
-            livros.map(l => `<option value="${l.id}">${l.titulo}</option>`).join('');
-    } catch (e) { console.error("Erro ao carregar livros:", e); }
+
+        select.innerHTML =
+            '<option value="">Selecione um livro...</option>' +
+            livros.map(l => {
+                const disponiveis = Number(l.disponiveis);
+                const indisponivel = disponiveis <= 0;
+
+                const descricao = indisponivel
+                    ? 'Indisponível'
+                    : `Disponíveis: ${disponiveis}`;
+
+                return `
+                    <option
+                        value="${l.id}"
+                        ${indisponivel ? 'disabled' : ''}
+                    >
+                        ${l.titulo} — ${descricao}
+                    </option>
+                `;
+            }).join('');
+
+    } catch (e) {
+        console.error("Erro ao carregar livros:", e);
+    }
 }
+
 
 async function carregarLeitoresSelect() {
     const select = document.getElementById('select-leitor');
@@ -77,17 +105,34 @@ async function efetivarReserva(idReserva, idLivro, idUsuario) {
     } catch (err) { console.error("Erro ao efetivar:", err); }
 }
 
-// FUNÇÃO PARA EXCLUIR RESERVA
+// FUNÇÃO PARA CANCELAR RESERVA, PRESERVANDO O HISTÓRICO
 async function cancelarReserva(id) {
-    if (!confirm("Deseja realmente excluir esta reserva?")) return;
+    if (!confirm("Deseja realmente cancelar esta reserva?")) return;
 
     try {
-        const res = await fetch(`api/cancelar_reserva.php?id=${id}`);
+        const formData = new FormData();
+        formData.append('id', id);
+
+        const res = await fetch('api/cancelar_reserva.php', {
+            method: 'POST',
+            body: formData
+        });
+
         const data = await res.json();
-        if (data.sucesso) {
-            carregarReservas();
-        } else { alert("Erro ao excluir."); }
-    } catch (err) { console.error("Erro ao cancelar:", err); }
+
+        if (!res.ok || !data.sucesso) {
+            alert("Erro ao cancelar: " + (data.erro || "Não foi possível cancelar a reserva."));
+            return;
+        }
+
+        alert("Reserva cancelada com sucesso!");
+
+        await carregarReservas();
+
+    } catch (err) {
+        console.error("Erro ao cancelar reserva:", err);
+        alert("Erro na comunicação com o servidor. Consulte o Console.");
+    }
 }
 
 // SALVAR NOVA RESERVA

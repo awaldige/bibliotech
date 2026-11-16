@@ -1,77 +1,154 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Livro - BiblioTech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#172b4d">
+
+    <title>Novo Livro | BiblioTech</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=2.1">
+    <link rel="stylesheet" href="css/style.css?v=5.0">
 </head>
 <body>
 
     <nav class="top-nav">
         <div class="container nav-flex">
-            <div class="logo">
-                <i class="fas fa-book-reader"></i> Biblio<span>Tech</span>
-            </div>
+            <a href="index.html" class="logo">
+                <i class="fas fa-book-reader"></i>
+                Biblio<span>Tech</span>
+            </a>
+
             <ul class="menu">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="livros.html" class="active">Livros</a></li>
+                <li><a href="index.html">Visão geral</a></li>
+                <li><a href="livros.html" class="active">Acervo</a></li>
                 <li><a href="usuarios.html">Leitores</a></li>
-                <li><a href="config.html"><i class="fas fa-cog"></i></a></li>
+                <li><a href="emprestimos.html">Empréstimos</a></li>
+                <li><a href="reservas.html">Reservas</a></li>
+                <li><a href="autores.html">Autores</a></li>
+                <li><a href="editoras.html">Editoras</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="action-box" style="max-width: 800px; margin: 0 auto;">
-            <h2><i class="fas fa-plus-circle"></i> Cadastrar Novo Livro</h2>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+    <main class="container institutional-dashboard">
+
+        <header class="dashboard-heading">
+            <div class="dashboard-heading-text">
+                <span class="dashboard-eyebrow">GESTÃO DO ACERVO</span>
+                <h1>Cadastrar novo livro</h1>
+                <p>Registre uma nova obra no catálogo bibliográfico da biblioteca.</p>
+            </div>
+
+            <a href="livros.html" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao acervo
+            </a>
+        </header>
+
+        <section class="institutional-panel book-form-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2><i class="fas fa-book"></i> Dados bibliográficos</h2>
+                    <p>Preencha as informações para incluir o livro no acervo.</p>
+                </div>
+            </div>
 
             <form id="form-adicionar-livro">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+                <div class="book-form-grid">
+
                     <div class="form-group">
-                        <label>Título do Livro</label>
-                        <input type="text" name="titulo" required placeholder="Ex: Dom Casmurro">
+                        <label for="titulo">Título do livro *</label>
+                        <input
+                            type="text"
+                            id="titulo"
+                            name="titulo"
+                            placeholder="Ex.: Dom Casmurro"
+                            maxlength="255"
+                            required
+                        >
                     </div>
+
                     <div class="form-group">
-                        <label>ISBN</label>
-                        <input type="text" name="isbn" placeholder="978-0000000000">
+                        <label for="isbn">ISBN</label>
+                        <input
+                            type="text"
+                            id="isbn"
+                            name="isbn"
+                            placeholder="Ex.: 978-0000000000"
+                        >
                     </div>
-                    
+
                     <div class="form-group">
-                        <label>Autor</label>
+                        <label for="select-autor">Autor *</label>
                         <select name="id_autor" id="select-autor" required>
                             <option value="">Carregando autores...</option>
                         </select>
                     </div>
+
                     <div class="form-group">
-                        <label>Editora</label>
+                        <label for="select-editora">Editora *</label>
                         <select name="id_editora" id="select-editora" required>
                             <option value="">Carregando editoras...</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Ano de Publicação</label>
-                        <input type="number" name="ano_publicacao" min="1500" max="2026">
+                        <label for="ano_publicacao">Ano de publicação</label>
+                        <input
+                            type="number"
+                            id="ano_publicacao"
+                            name="ano_publicacao"
+                            min="1500"
+                            max="2026"
+                            placeholder="Ex.: 2024"
+                        >
                     </div>
+
                     <div class="form-group">
-                        <label>Quantidade de Exemplares</label>
-                        <input type="number" name="quantidade" value="1" min="1">
+                        <label for="quantidade">Quantidade de exemplares *</label>
+                        <input
+                            type="number"
+                            id="quantidade"
+                            name="quantidade"
+                            value="1"
+                            min="1"
+                            required
+                        >
+                        <small>Informe o total de exemplares desta obra.</small>
+                    </div>
+
+                </div>
+
+                <div class="book-form-footer">
+                    <span class="form-required-note">* Campos obrigatórios</span>
+
+                    <div class="book-form-actions">
+                        <a href="livros.html" class="btn btn-outline">
+                            Cancelar
+                        </a>
+
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-check"></i>
+                            Salvar livro
+                        </button>
                     </div>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; gap: 15px;">
-                    <button type="submit" class="btn btn-save" style="flex: 2; cursor: pointer;">
-                        <i class="fas fa-check"></i> Salvar Livro
-                    </button>
-                    <a href="livros.html" class="btn btn-outline" style="flex: 1;">Cancelar</a>
-                </div>
             </form>
-        </div>
-    </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <span>BiblioTech — Gestão de Biblioteca</span>
+            <span>AW TECHNOLOGY</span>
+        </footer>
+
+    </main>
 
     <script src="js/adicionar_livro.js"></script>
 </body>

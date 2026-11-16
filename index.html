@@ -1,218 +1,529 @@
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BiblioTech - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="description" content="BiblioTech — plataforma demonstrativa de gerenciamento de biblioteca, acervo e circulação de livros.">
+
+   <title>BiblioTech | Gestão de Biblioteca</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=2.0">
-    <style>
-        /* Estilos específicos para o Modal */
-        .modal-simples {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(4px);
-        }
-        .modal-content {
-            width: 90%;
-            max-width: 400px;
-            background: white;
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease;
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .stat-card.alert { border-bottom: 4px solid #e67e22; }
-        
-        /* Cor específica para o botão de editora */
-        .btn-editora { border: 2px solid #9b59b6 !important; color: #9b59b6 !important; }
-        .btn-editora:hover { background: #9b59b6; color: white !important; }
-    </style>
+    <link rel="stylesheet" href="css/style.css?v=5.0">
 </head>
+
 <body>
 
-    <nav class="top-nav">
+    <!-- Navegação institucional -->
+    <nav class="top-nav" aria-label="Navegação principal">
         <div class="container nav-flex">
-            <div class="logo">
-                <i class="fas fa-book-reader"></i> Biblio<span>Tech</span>
-            </div>
+
+            <a href="index.html" class="logo" aria-label="BiblioTech - Início">
+                <i class="fas fa-book-reader"></i>
+                <span>Biblio<span>Tech</span></span>
+            </a>
+
             <ul class="menu">
-                <li><a href="index.html" class="active">Início</a></li>
-                <li><a href="livros.html">Livros</a></li>
-                <li><a href="usuarios.html">Leitores</a></li>
-                <li><a href="emprestimos.html">Empréstimos</a></li>
-                <li><a href="reservas.html">Reservas</a></li> 
-                <li><a href="editoras.html">Editoras</a></li>               
+                <li>
+                    <a href="index.html" class="active" aria-current="page">
+                        <i class="fas fa-chart-pie"></i> Visão geral
+                    </a>
+                </li>
+                <li>
+                    <a href="livros.html">
+                        <i class="fas fa-book"></i> Acervo
+                    </a>
+                </li>
+                <li>
+                    <a href="usuarios.html">
+                        <i class="fas fa-users"></i> Leitores
+                    </a>
+                </li>
+                <li>
+                    <a href="emprestimos.html">
+                        <i class="fas fa-exchange-alt"></i> Empréstimos
+                    </a>
+                </li>
+                <li>
+                    <a href="reservas.html">
+                        <i class="fas fa-bookmark"></i> Reservas
+                    </a>
+                </li>
+                <li>
+                    <a href="autores.html">
+                        <i class="fas fa-feather-alt"></i> Autores
+                    </a>
+                </li>
+                <li>
+                    <a href="editoras.html">
+                        <i class="fas fa-building"></i> Editoras
+                    </a>
+                </li>
             </ul>
+
         </div>
     </nav>
 
-    <div class="container">
-        <header class="welcome-banner">
-            <h1>Bem-vindo ao Painel de Controle 📚</h1>
-            <p id="data-atual">Carregando data...</p>
+    <main class="container institutional-dashboard">
+
+        <!-- Apresentação -->
+        <header class="dashboard-heading">
+            <div class="dashboard-heading-text">
+                <span class="dashboard-eyebrow">
+                    <i class="fas fa-landmark"></i>
+                    SISTEMA DE GESTÃO DE BIBLIOTECA
+                </span>
+
+                <h1>Visão geral</h1>
+
+                <p>
+                    Acompanhe o acervo, os leitores e a circulação de exemplares.
+                </p>
+            </div>
+
+            <div class="dashboard-date">
+                <i class="far fa-calendar-alt"></i>
+                <span id="data-atual">Carregando data...</span>
+            </div>
         </header>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="card-icon"><i class="fas fa-book"></i></div>
-                <h3>Livros</h3>
-                <p id="total-livros">0</p>
-                <span>No acervo</span>
-            </div>
-            <div class="stat-card success">
-                <div class="card-icon"><i class="fas fa-hand-holding-heart"></i></div>
-                <h3>Empréstimos</h3>
-                <p id="total-emprestimos">0</p>
-                <span>Ativos</span>
-            </div>
-            <div class="stat-card alert"> 
-                <div class="card-icon"><i class="fas fa-calendar-check" style="color: #e67e22;"></i></div>
-                <h3>Reservas</h3>
-                <p id="total-reservas">0</p>
-                <span>Aguardando</span>
-            </div>
-            <div class="stat-card">
-                <div class="card-icon"><i class="fas fa-users"></i></div>
-                <h3>Leitores</h3>
-                <p id="total-usuarios">0</p>
-                <span>Cadastrados</span>
-            </div>
-        </div>
+        <!-- Indicadores do acervo -->
+        <section class="dashboard-section" aria-labelledby="titulo-acervo">
 
-        <div class="dashboard-content">
-            <div class="list-box">
-                <h2><i class="fas fa-bell"></i> Atividade Recente</h2>
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">PATRIMÔNIO BIBLIOGRÁFICO</span>
+                    <h2 id="titulo-acervo">Acervo da biblioteca</h2>
+                    <p>Visão dos títulos e exemplares registrados.</p>
+                </div>
+
+                <a href="livros.html" class="section-link">
+                    Consultar acervo
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="stats-grid institutional-stats">
+
+                <article class="stat-card institutional-card">
+                    <div class="stat-card-top">
+                        <span class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </span>
+                        <span class="stat-label">CATÁLOGO</span>
+                    </div>
+
+                    <p id="total-livros" class="stat-number">0</p>
+                    <h3>Títulos cadastrados</h3>
+                    <span class="stat-description">Obras no catálogo</span>
+                </article>
+
+                <article class="stat-card institutional-card">
+                    <div class="stat-card-top">
+                        <span class="stat-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </span>
+                        <span class="stat-label">PATRIMÔNIO</span>
+                    </div>
+
+                    <p id="total-exemplares" class="stat-number">0</p>
+                    <h3>Total de exemplares</h3>
+                    <span class="stat-description">Unidades registradas</span>
+                </article>
+
+                <article class="stat-card institutional-card stat-available">
+                    <div class="stat-card-top">
+                        <span class="stat-icon">
+                            <i class="fas fa-book-reader"></i>
+                        </span>
+                        <span class="stat-label">DISPONIBILIDADE</span>
+                    </div>
+
+                    <p id="total-disponiveis" class="stat-number">0</p>
+                    <h3>Exemplares disponíveis</h3>
+                    <span class="stat-description">Livros livres para circulação</span>
+                </article>
+
+                <article class="stat-card institutional-card">
+                    <div class="stat-card-top">
+                        <span class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </span>
+                        <span class="stat-label">COMUNIDADE</span>
+                    </div>
+
+                    <p id="total-usuarios" class="stat-number">0</p>
+                    <h3>Leitores cadastrados</h3>
+                    <span class="stat-description">Usuários da biblioteca</span>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Indicadores de circulação -->
+        <section class="dashboard-section" aria-labelledby="titulo-circulacao">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">MOVIMENTAÇÃO DO ACERVO</span>
+                    <h2 id="titulo-circulacao">Circulação de exemplares</h2>
+                    <p>Acompanhe empréstimos, atrasos e reservas.</p>
+                </div>
+            </div>
+
+            <div class="stats-grid circulation-stats">
+
+                <article class="stat-card institutional-card circulation-card">
+                    <div class="stat-card-top">
+                        <span class="stat-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </span>
+                        <span class="stat-label">EM CIRCULAÇÃO</span>
+                    </div>
+
+                    <p id="total-emprestimos" class="stat-number">0</p>
+                    <h3>Empréstimos em aberto</h3>
+                    <span class="stat-description">Ativos e atrasados</span>
+                </article>
+
+                <article class="stat-card institutional-card circulation-card stat-overdue">
+                    <div class="stat-card-top">
+                        <span class="stat-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </span>
+                        <span class="stat-label">ATENÇÃO</span>
+                    </div>
+
+                    <p id="total-atrasados" class="stat-number">0</p>
+                    <h3>Empréstimos atrasados</h3>
+                    <span class="stat-description">Devolução pendente</span>
+                </article>
+
+                <article class="stat-card institutional-card circulation-card stat-reservations">
+                    <div class="stat-card-top">
+                        <span class="stat-icon">
+                            <i class="fas fa-bookmark"></i>
+                        </span>
+                        <span class="stat-label">FILA DE ESPERA</span>
+                    </div>
+
+                    <p id="total-reservas" class="stat-number">0</p>
+                    <h3>Reservas pendentes</h3>
+                    <span class="stat-description">Aguardando atendimento</span>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Atividades e operações -->
+        <section class="dashboard-section dashboard-lower" aria-label="Movimentações e operações">
+
+            <div class="list-box institutional-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">ACOMPANHAMENTO</span>
+                        <h2>
+                            <i class="fas fa-history"></i>
+                            Movimentações recentes
+                        </h2>
+                        <p>Últimos registros e operações da biblioteca.</p>
+                    </div>
+                </div>
+
                 <div id="lista-atividades">
                     <div class="loading-state">
                         <i class="fas fa-spinner fa-spin"></i>
-                        <p>Buscando movimentações...</p>
+                        <p>Carregando movimentações...</p>
                     </div>
                 </div>
+
             </div>
 
-            <div class="action-box">
-                <h2><i class="fas fa-bolt"></i> Atalhos Rápidos</h2>
-                <nav class="nav-vertical">
-                    <a href="adicionar.html" class="btn btn-add">
-                        <i class="fas fa-plus-circle"></i> Cadastrar Livro
-                    </a>
-                    
-                    <button onclick="abrirModal('modalAutor')" class="btn btn-outline" style="width: 100%; cursor: pointer; margin-bottom: 15px; border: 2px solid #3498db; color: #3498db;">
-                        <i class="fas fa-user-plus"></i> Novo Autor
-                    </button>
+            <aside class="action-box institutional-panel">
 
-                    <button onclick="abrirModal('modalEditora')" class="btn btn-outline btn-editora" style="width: 100%; cursor: pointer; margin-bottom: 15px;">
-                        <i class="fas fa-building"></i> Nova Editora
-                    </button>
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-kicker">ACESSO RÁPIDO</span>
+                        <h2>
+                            <i class="fas fa-tasks"></i>
+                            Operações da biblioteca
+                        </h2>
+                        <p>Acesse os principais módulos.</p>
+                    </div>
+                </div>
+
+                <nav class="nav-vertical institutional-actions" aria-label="Operações rápidas">
+
+                    <a href="adicionar.html" class="btn btn-add">
+                        <i class="fas fa-plus-circle"></i>
+                        Cadastrar novo livro
+                    </a>
+
+                    <a href="emprestimos.html" class="btn btn-save">
+                        <i class="fas fa-exchange-alt"></i>
+                        Registrar empréstimo
+                    </a>
+
+                    <a href="reservas.html" class="btn btn-outline btn-reservas">
+                        <i class="fas fa-bookmark"></i>
+                        Gerenciar reservas
+                    </a>
 
                     <a href="livros.html" class="btn btn-outline">
-                        <i class="fas fa-list"></i> Listar Livros
-                    </a>
-                    
-                    <a href="emprestimos.html" class="btn btn-save">
-                        <i class="fas fa-exchange-alt"></i> Novo Empréstimo
+                        <i class="fas fa-list"></i>
+                        Consultar acervo
                     </a>
 
-                    <a href="reservas.html" class="btn btn-outline" style="border-color: #e67e22; color: #e67e22;">
-                        <i class="fas fa-bookmark"></i> Gerenciar Reservas
+                    <a href="usuarios.html" class="btn btn-outline">
+                        <i class="fas fa-user-plus"></i>
+                        Gerenciar leitores
                     </a>
+
+                    <div class="quick-register">
+                        <span class="quick-register-title">CADASTROS COMPLEMENTARES</span>
+
+                        <button
+                            type="button"
+                            onclick="abrirModal('modalAutor')"
+                            class="btn btn-outline"
+                        >
+                            <i class="fas fa-feather-alt"></i>
+                            Novo autor
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="abrirModal('modalEditora')"
+                            class="btn btn-outline btn-editora"
+                        >
+                            <i class="fas fa-building"></i>
+                            Nova editora
+                        </button>
+                    </div>
+
                 </nav>
-            </div>
-        </div>
-    </div>
+            </aside>
 
-    <div id="modalAutor" class="modal-simples">
+        </section>
+
+        <footer class="dashboard-footer">
+            <span>BiblioTech — Sistema demonstrativo de gestão de biblioteca</span>
+            <span>Desenvolvido por AW TECHNOLOGY</span>
+        </footer>
+
+    </main>
+
+    <!-- Modal: cadastro rápido de autor -->
+    <div
+        id="modalAutor"
+        class="modal-simples"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal-autor"
+    >
         <div class="modal-content">
-            <h3 style="margin-bottom: 15px;"><i class="fas fa-feather"></i> Novo Autor</h3>
+
+            <h3 id="titulo-modal-autor">
+                <i class="fas fa-feather-alt"></i>
+                Novo autor
+            </h3>
+
             <form id="form-rapido-autor">
+
                 <div class="form-group">
-                    <label>Nome do Autor</label>
-                    <input type="text" id="nome-autor" placeholder="Ex: Machado de Assis" required style="width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px;">
+                    <label for="nome-autor">Nome do autor</label>
+                    <input
+                        type="text"
+                        id="nome-autor"
+                        placeholder="Ex.: Machado de Assis"
+                        maxlength="255"
+                        required
+                    >
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="submit" class="btn btn-save" style="flex:2; border:none; cursor:pointer;">Salvar</button>
-                    <button type="button" onclick="fecharModal('modalAutor')" class="btn btn-outline" style="flex:1; cursor:pointer;">Cancelar</button>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-save">
+                        <i class="fas fa-check"></i>
+                        Salvar autor
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="fecharModal('modalAutor')"
+                        class="btn btn-outline"
+                    >
+                        Cancelar
+                    </button>
                 </div>
+
             </form>
         </div>
     </div>
 
-    <div id="modalEditora" class="modal-simples">
+    <!-- Modal: cadastro rápido de editora -->
+    <div
+        id="modalEditora"
+        class="modal-simples"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal-editora"
+    >
         <div class="modal-content">
-            <h3 style="margin-bottom: 15px;"><i class="fas fa-building"></i> Nova Editora</h3>
+
+            <h3 id="titulo-modal-editora">
+                <i class="fas fa-building"></i>
+                Nova editora
+            </h3>
+
             <form id="form-rapido-editora">
+
                 <div class="form-group">
-                    <label>Nome da Editora</label>
-                    <input type="text" id="nome-editora" placeholder="Ex: Editora Rocco" required style="width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px;">
+                    <label for="nome-editora">Nome da editora</label>
+                    <input
+                        type="text"
+                        id="nome-editora"
+                        placeholder="Ex.: Editora Rocco"
+                        maxlength="255"
+                        required
+                    >
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="submit" class="btn btn-save" style="flex:2; border:none; cursor:pointer; background-color: #9b59b6;">Salvar</button>
-                    <button type="button" onclick="fecharModal('modalEditora')" class="btn btn-outline" style="flex:1; cursor:pointer;">Cancelar</button>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-save btn-editora">
+                        <i class="fas fa-check"></i>
+                        Salvar editora
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="fecharModal('modalEditora')"
+                        class="btn btn-outline"
+                    >
+                        Cancelar
+                    </button>
                 </div>
+
             </form>
         </div>
     </div>
 
     <script src="js/dashboard.js"></script>
+
     <script>
-        // Funções Genéricas para os Modais
-        function abrirModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
-        
-        window.onclick = function(event) {
-            if (event.target.className === 'modal-simples') {
-                event.target.style.display = 'none';
+        // Controle dos modais
+        function abrirModal(id) {
+            const modal = document.getElementById(id);
+
+            if (modal) {
+                modal.style.display = 'flex';
+
+                const campo = modal.querySelector('input');
+
+                if (campo) {
+                    campo.focus();
+                }
             }
         }
 
-        // Lógica para Salvar Editora via Modal
-        document.getElementById('form-rapido-editora').addEventListener('submit', async (e) => {
+        function fecharModal(id) {
+            const modal = document.getElementById(id);
+
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Fechar modal ao clicar fora do conteúdo
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal-simples')) {
+                event.target.style.display = 'none';
+            }
+        });
+
+        // Fechar modal com a tecla Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.querySelectorAll('.modal-simples').forEach(function(modal) {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+
+        // Cadastro rápido de editora
+        document.getElementById('form-rapido-editora').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const nome = document.getElementById('nome-editora').value;
+
+            const nome = document.getElementById('nome-editora').value.trim();
+
+            if (!nome) {
+                alert('Informe o nome da editora.');
+                return;
+            }
+
             const formData = new FormData();
             formData.append('nome', nome);
 
             try {
-                const res = await fetch('api/salvar_editora.php', { method: 'POST', body: formData });
+                const res = await fetch('api/salvar_editora.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
                 const data = await res.json();
-                if(data.sucesso) {
-                    alert("✅ Editora cadastrada com sucesso!");
+
+                if (res.ok && data.sucesso) {
+                    alert('Editora cadastrada com sucesso!');
                     fecharModal('modalEditora');
                     location.reload();
-                } else { alert("Erro: " + data.erro); }
-            } catch (err) { alert("Erro de conexão."); }
+                } else {
+                    alert('Erro: ' + (data.erro || 'Não foi possível cadastrar a editora.'));
+                }
+
+            } catch (err) {
+                alert('Erro de conexão ao cadastrar editora.');
+            }
         });
 
-        // Lógica para Salvar Autor via Modal (Reaproveitada)
-        document.getElementById('form-rapido-autor').addEventListener('submit', async (e) => {
+        // Cadastro rápido de autor
+        document.getElementById('form-rapido-autor').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const nome = document.getElementById('nome-autor').value;
+
+            const nome = document.getElementById('nome-autor').value.trim();
+
+            if (!nome) {
+                alert('Informe o nome do autor.');
+                return;
+            }
+
             const formData = new FormData();
             formData.append('nome', nome);
 
             try {
-                const res = await fetch('api/salvar_autor.php', { method: 'POST', body: formData });
+                const res = await fetch('api/salvar_autor.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
                 const data = await res.json();
-                if(data.sucesso) {
-                    alert("✅ Autor cadastrado com sucesso!");
+
+                if (res.ok && data.sucesso) {
+                    alert('Autor cadastrado com sucesso!');
                     fecharModal('modalAutor');
                     location.reload();
-                } else { alert("Erro: " + data.erro); }
-            } catch (err) { alert("Erro de conexão."); }
+                } else {
+                    alert('Erro: ' + (data.erro || 'Não foi possível cadastrar o autor.'));
+                }
+
+            } catch (err) {
+                alert('Erro de conexão ao cadastrar autor.');
+            }
         });
     </script>
-</body>
 
+</body>
 </html>
